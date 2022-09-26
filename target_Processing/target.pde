@@ -1,0 +1,23 @@
+void setup(){
+    size(500,500);
+    background(0);
+    noStroke();
+    ellipse(250,250,500,500);
+    fill(0);
+    ellipse(250,250,450,450);
+    fill(255);
+    ellipse(250,250,300,300);
+    fill(0);
+    ellipse(250,250,150,150);
+    fill(255);
+    ellipse(250,250,100,100);
+    fill(0);
+    ellipse(250,250,50,50);
+    fill(255);
+    ellipse(250,250,25,25);
+    fill(20);
+    ellipse(250,250,10,10);
+    fill(255,0,0);
+    ellipse(250,250,5,5);
+    fill(0);
+}

@@ -39,7 +39,6 @@ def myavg(value):
     avg = sum/len(value)
     return(avg)
 
-
 def a(value):
     print("Max : ", mymax(value)[0])
     print("Min : ", mymin(value)[0])
