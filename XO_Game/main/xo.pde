@@ -91,6 +91,73 @@ void draw(){
     }
 }
 
+void checkHint(){
+    printBoard();
+    // แนวนอน
+    if (board[0][0] == board[1][0]){
+        showHint();
+    }
+    if (board[1][0] == board[2][0]){
+        showHint();
+    }
+    if (board[0][1] == board[1][1]){
+        showHint();
+    }
+    if (board[1][1] == board[2][1]){
+        showHint();
+    }
+    if (board[0][2] == board[1][2]){
+        showHint();
+    }
+    if (board[1][2] == board[2][2]){
+        showHint();
+    }
+    // แนวตั้ง
+    if (board[0][0] == board[0][1]){
+        showHint();
+    }
+    if (board[0][1] == board[0][2]){
+        showHint();
+    }
+    if (board[1][0] == board[1][1]){
+        showHint();
+    }
+    if (board[1][1] == board[1][2]){
+        showHint();
+    }
+    if (board[2][0] == board[2][1]){
+        showHint();
+    }
+    if (board[2][1] == board[2][2]){
+        showHint();
+    }
+    // แนวทะแยง
+    if (board[0][0] == board[1][1]){
+        showHint();
+    }
+    if (board[1][1] == board[2][2]){
+        showHint();
+    }
+    if (board[0][2] == board[1][1]){
+        showHint();
+    }
+    if (board[1][1] == board[2][0]){
+        showHint();
+    }
+}
+
+void showHint(){
+    noStroke();
+    fill(255);
+    rect(180,810,450,815);
+    stroke(10);
+    textSize(40); // กำหนดขนาดตัวอักษรที่ 40 (Set text size to 40)
+    fill(255,0,0); // กำหนดสีตัวอักษรให้เป็นสีแดง (Set text color to red)
+    String printthis = "Hint : " + Player + " is close to winning";
+    text(printthis,190,850);
+    fill(0); // คืนค่าสีกลับเป็นสีดำเหมือนเดิม (Set color back to black)
+}
+
 // Mouse
 void mousePressed(){
     if (isEnd == false){ // ถ้าเกมยังไม่จบ (If game not end yet)
@@ -197,15 +264,18 @@ void drawSelection(int posX, int posY){ // ฟังก์ชันไว้เ�
         posY_ANIMATE_O = posY; // วาด O ที่ตำแหน่ง (posX,posY) (Draw O at position (posX,posY))
         board[i][j] = 'O'; 
     }
-    checkWin(); // หลังถูกสั่งให้วาด ก็ตรวจว่ามีผู้ชนะหรือยัง (After drawing, check if there is a winner)
-    flipFlop(); // สลับรอบของผู้เล่น (Change turn) 
-
     // กลบข้อความมุมขวาล่าง
     fill(255);
     noStroke();
     rect(690,850,800,900);
     fill(0);
     stroke(10);
+    
+    checkHint();
+    checkWin(); // หลังถูกสั่งให้วาด ก็ตรวจว่ามีผู้ชนะหรือยัง (After drawing, check if there is a winner)
+    flipFlop(); // สลับรอบของผู้เล่น (Change turn) 
+
+    
 }
 
 void saveText(){ // เช็คว่าเล่นไปแล้วกี่ช่อง (Count how many channels have been used)
@@ -324,35 +394,34 @@ void drawLoadGame(){
 }
 void checkWin(){ // ตรวจสอบว่ามีผู้ชนะหรือไม่ โดยใช้ Array เป็นตัวอ้างอิงตำแหน่ง (Check if someone wins by referring to an array.)
     // แนวนอน (Horizontal)
-    if (board[0][0] == board[0][1] && board[0][0] == board[0][2]){
+    if (board[0][0] == board[1][0] && board[1][0] == board[2][0]){
         printWinner();
     }
-    if (board[1][0] == board[1][1] && board[1][0] == board[1][2]){
+    if (board[0][1] == board[1][1] && board[1][1] == board[2][1]){
         printWinner();
     }
-    if (board[2][0] == board[2][1] && board[2][0] == board[2][2]){
+    if (board[0][2] == board[1][2] && board[1][2] == board[2][2]){
         printWinner();
     }
-    
+
     // แนวตั้ง (Vertical)
-    if (board[2][0] == board[1][0] && board[2][0] == board[2][0]){
+    if (board[0][0] == board[0][1] && board[0][1] == board[0][2]){
         printWinner();
     }
-    if (board[0][1] == board[1][1] && board[0][1] == board[2][1]){
+    if (board[1][0] == board[1][1] && board[1][1] == board[1][2]){
         printWinner();
     }
-    if (board[0][2] == board[1][2] && board[0][2] == board[2][2]){
+    if (board[2][0] == board[2][1] && board[2][1] == board[2][2]){
         printWinner();
     }
-    
+
     // แนวทแยง (Diagonal)
-    if (board[0][0] == board[1][1] && board[0][0] == board[2][2]){
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2]){
         printWinner();
     }
-    if (board[0][2] == board[1][1] && board[0][2] == board[2][0]){
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0]){
         printWinner();
     }
-    
 }
 
 void printWinner(){ // แสดงข้อความว่าใครชนะ (Show who wins)
@@ -386,6 +455,28 @@ void checkClicked(){ // เช็คว่าเล่นไปแล้วก�
     j = 0;
 }
 
+void printBoard(){
+    int i = 0;
+    int j = 0;
+    println();
+    while (j < 3){
+        while (i < 3){
+            print("[",i,"]","[",j,"]",board[i][j]);
+            
+            if (i < 2){
+                print("   |   ");
+            }
+            i = i + 1;
+        }
+        i = 0;
+        j = j + 1;
+
+    println();
+    }
+    j = 0;
+    println();
+}
+
 void keyPressed(){
     // กลบข้อความมุมขวาล่าง (อันเก่า)
     fill(255);
@@ -404,6 +495,7 @@ void keyPressed(){
         fill(255,0,0);
         textSize(40);
         text(clicked,20,40);
+        printBoard();
     }
 
     // Click R to reset game
