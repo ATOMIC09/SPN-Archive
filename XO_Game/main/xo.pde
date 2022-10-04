@@ -33,6 +33,7 @@ void resetArray(){ //สร้างไว้ดึงตัวอักษร�
 } 
 
 void setup(){
+    frameRate(60);
     size(800,900); // กำหนดขนาดหน้าต่าง (Set window size)
     background(255); // กำหนดสีพื้นหลัง (Set background color)
     fill(0); // กำหนดสีตัวอักษรเป็นสีดำ (Set text color as black)
@@ -45,15 +46,17 @@ void setup(){
     textSize(70); // กำหนดขนาดตัวอักษรที่ 70 (Set text size as 70)
     text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
     text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
-    stroke(1); // หลังใช้ noStroke() แล้วก็คืนค่ากลับ (ไม่งั้นจะมองไม่เห็นเส้นที่วาด) (Return stroke value)
+    stroke(10); // หลังใช้ noStroke() แล้วก็คืนค่ากลับ (ไม่งั้นจะมองไม่เห็นเส้นที่วาด) (Return stroke value)
+    drawGrid(); // เรียกใช้งานฟังก์ชัน drawLine() (Call drawLine() to draw lines)
+}
 
+void drawGrid(){
     // วาดเส้นตาราง (Draw grid)
     line(100,400,700,400);
     line(100,600,700,600);
     line(300,200,300,800);
     line(500,200,500,800);
 }
-
 void draw(){
     // เขียนชื่อคนทำ (Credit)
     textSize(18); // (Set text size as 18)
@@ -157,7 +160,7 @@ void drawSelection(int posX, int posY){ // ฟังก์ชันไว้เ�
     textSize(70);
     text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
     text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
-    stroke(1);
+    stroke(10);
     flipFlop(); // หลังแสดงแล้ว เปลี่ยนกลับเป็นผู้เล่นเดิม (Change back to previous player)
     
     int i = 0;
@@ -201,7 +204,7 @@ void drawSelection(int posX, int posY){ // ฟังก์ชันไว้เ�
     noStroke();
     rect(690,850,800,900);
     fill(0);
-    stroke(1);
+    stroke(10);
 }
 
 void saveText(){ // เช็คว่าเล่นไปแล้วกี่ช่อง (Count how many channels have been used)
@@ -227,6 +230,7 @@ void saveText(){ // เช็คว่าเล่นไปแล้วกี่
     }
     }
     j = 0;
+    output.print("," + Player);
     println();
 }
 
@@ -387,7 +391,7 @@ void keyPressed(){
     noStroke();
     rect(690,850,800,900);
     fill(0);
-    stroke(1);
+    stroke(10);
 
     // Debug Mode
     // Click C to count XO in array
@@ -403,9 +407,19 @@ void keyPressed(){
 
     // Click R to reset game
     if (keyCode == 'R'){
-        background(255); // เคลียร์หน้าต่างเป็นสีขาว (Clear the window to white)
         setup(); // เรียกใช้งานฟังก์ชัน setup() (Call the setup () function)
         resetArray(); // เรียกใช้งานฟังก์ชัน resetArray() (Call the resetArray () function)
+        
+        Player = 'X';
+        // เขียนบอกว่าเป็นรอบของใคร (แบบเดียวกับใน void setup()) (Show who's turn. Same as void setup())
+        noStroke();
+        fill(255);
+        rect(300,50,230,60);
+        fill(0);
+
+        textSize(70);
+        text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
+        text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
 
         fill(255,55,58);
         textSize(30); // (Set text size as 30)
@@ -443,8 +457,13 @@ void keyPressed(){
                 board[0][2] = pieces[6].charAt(0);
                 board[1][2] = pieces[7].charAt(0);
                 board[2][2] = pieces[8].charAt(0);
+                Player = pieces[9].charAt(0);
             }
             reader.close();
+
+            background(255);
+            drawGrid();
+            isEnd = false;
             printFileLoaded();
             drawLoadGame();
 
@@ -452,6 +471,17 @@ void keyPressed(){
             textSize(30); // (Set text size as 30)
             text("Loaded",700,890);
             fill(0);
+
+            // เขียนบอกว่าเป็นรอบของใคร (แบบเดียวกับใน void setup()) (Show who's turn. Same as void setup())
+            noStroke();
+            fill(255);
+            rect(300,50,230,60);
+            fill(0);
+
+            textSize(70);
+            text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
+            text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
+        
         }
 
         catch (IOException e) {
