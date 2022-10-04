@@ -47,6 +47,7 @@ void setup(){
     text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
     text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
     stroke(10); // หลังใช้ noStroke() แล้วก็คืนค่ากลับ (ไม่งั้นจะมองไม่เห็นเส้นที่วาด) (Return stroke value)
+    strokeWeight(7);
     drawGrid(); // เรียกใช้งานฟังก์ชัน drawLine() (Call drawLine() to draw lines)
 }
 
