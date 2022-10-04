@@ -6,8 +6,8 @@ char[][] custom_board = {{'a','b','c'},{'d','e','f'},{'g','h','i'}}; // ตา�
 char[][] board = {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}}; // ตารางเกมหลัก (Create board)
 int clicked = 0; // กำหนดตัวแปรเพื่อนับจำนวนครั้งที่คลิก (Click counter)
 boolean isEnd = false; // เก็บสถานะว่าเกมจบหรือยังหรือยัง (Check Is game ended?)
-int sizeX = 1;
-int sizeO = 1;
+int speedX = 1;
+int speedO = 1;
 int clickX = 0;
 int posX_ANIMATE_X = 0;
 int posY_ANIMATE_X = 0;
@@ -67,13 +67,13 @@ void draw(){
         if (Player == 'O'){ // ถ้าเป็นรอบของ X (If it's X's turn)
             if (clickX == 1){
                 drawX();
-                sizeX = sizeX + 5;
+                speedX = speedX + 5;
             }
         }
         else{
             if (clickX == 1){
                 drawO();
-                sizeO = sizeO + 10;
+                speedO = speedO + 10;
             }
         }
     }
@@ -81,12 +81,12 @@ void draw(){
         clickX = 0;
     }
 
-    if (sizeX > 50){
-        sizeX = 1;
+    if (speedX > 50){
+        speedX = 1;
         clickX = 0;
     }
-    if (sizeO > 100){
-        sizeO = 1;
+    if (speedO > 100){
+        speedO = 1;
         clickX = 0;
     }
 }
@@ -260,13 +260,13 @@ void printFileLoaded(){
 void drawX(){ // วาด X ตามตำแหน่ง posX,posY (Draw X at position posX,posY)
     fill(0);
     stroke(0);
-    line(posX_ANIMATE_X-sizeX,posY_ANIMATE_X-sizeX,posX_ANIMATE_X+sizeX,posY_ANIMATE_X+sizeX);
-    line(posX_ANIMATE_X-sizeX,posY_ANIMATE_X+sizeX,posX_ANIMATE_X+sizeX,posY_ANIMATE_X-sizeX);
+    line(posX_ANIMATE_X-speedX,posY_ANIMATE_X-speedX,posX_ANIMATE_X+speedX,posY_ANIMATE_X+speedX);
+    line(posX_ANIMATE_X-speedX,posY_ANIMATE_X+speedX,posX_ANIMATE_X+speedX,posY_ANIMATE_X-speedX);
 }
 
 void drawO(){ // วาด O ตามตำแหน่ง posX,posY (Draw O at position posX,posY)
     fill(255);
-    circle(posX_ANIMATE_O,posY_ANIMATE_O,sizeO);
+    circle(posX_ANIMATE_O,posY_ANIMATE_O,speedO);
     fill(0);
 }
 
@@ -301,7 +301,7 @@ void drawLoadGame(){
             if (board[i][j] == 'X'){
                 posX_ANIMATE_X = posX;
                 posY_ANIMATE_X = posY; // วาด X ที่ตำแหน่ง (posX,posY) (Draw X at position (posX,posY))
-                sizeX = 50;
+                speedX = 50;
                 drawX();
                 
                 
@@ -309,7 +309,7 @@ void drawLoadGame(){
             if (board[i][j] == 'O'){
                 posX_ANIMATE_O = posX;
                 posY_ANIMATE_O = posY; // วาด O ที่ตำแหน่ง (posX,posY) (Draw O at position (posX,posY))
-                sizeO = 100;
+                speedO = 100;
                 drawO();
                 
             }
