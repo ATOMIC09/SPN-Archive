@@ -6,16 +6,16 @@ char[][] custom_board = {{'a','b','c'},{'d','e','f'},{'g','h','i'}}; // ตา�
 char[][] board = {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}}; // ตารางเกมหลัก (Create board)
 int clicked = 0; // กำหนดตัวแปรเพื่อนับจำนวนครั้งที่คลิก (Click counter)
 boolean isEnd = false; // เก็บสถานะว่าเกมจบหรือยังหรือยัง (Check Is game ended?)
-int speedX = 1;
-int speedO = 1;
-int clickX = 0;
-int posX_ANIMATE_X = 0;
-int posY_ANIMATE_X = 0;
 
-int posX_ANIMATE_O = 0;
-int posY_ANIMATE_O = 0;
+// Animation
+int speedX = 1; // เฟรมของ X สับหรับอนิเมชัน (X animation speed)
+int speedO = 1; // เฟรมของ O สับหรับอนิเมชัน (O animation speed)
+int clickX = 0; // ตรวจสอบว่าคลิกที่ช่องไปหรือยัง (Check if clicked)
+int posX_ANIMATE_X = 0; // ตำแหน่งของ X แกน X ในช่อง (X animation position)
+int posY_ANIMATE_X = 0; // ตำแหน่งของ X แกน Y ในช่อง (X animation position)
+int posX_ANIMATE_O = 0; // ตำแหน่งของ O แกน X ในช่อง (O animation position)
+int posY_ANIMATE_O = 0; // ตำแหน่งของ O แกน Y ในช่อง (O animation position)
 
-boolean isLoading = false;
 
 void resetArray(){ //สร้างไว้ดึงตัวอักษรจาก Array ของ custom_board ไว้ใน board (Create a board using custom_board as a reference)
     int i = 0;
@@ -33,7 +33,7 @@ void resetArray(){ //สร้างไว้ดึงตัวอักษร�
 } 
 
 void setup(){
-    frameRate(60);
+    frameRate(60); // กำหนดเฟรมเรท (Set frame rate)
     size(800,900); // กำหนดขนาดหน้าต่าง (Set window size)
     background(255); // กำหนดสีพื้นหลัง (Set background color)
     fill(0); // กำหนดสีตัวอักษรเป็นสีดำ (Set text color as black)
@@ -47,7 +47,7 @@ void setup(){
     text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
     text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
     stroke(10); // หลังใช้ noStroke() แล้วก็คืนค่ากลับ (ไม่งั้นจะมองไม่เห็นเส้นที่วาด) (Return stroke value)
-    strokeWeight(7);
+    strokeWeight(10); // กำหนดความหนาของเส้น (Set stroke weight)
     drawGrid(); // เรียกใช้งานฟังก์ชัน drawLine() (Call drawLine() to draw lines)
 }
 
@@ -58,42 +58,42 @@ void drawGrid(){
     line(300,200,300,800);
     line(500,200,500,800);
 }
+
 void draw(){
-    // เขียนชื่อคนทำ (Credit)
     textSize(18); // (Set text size as 18)
-    text("R - Reset | S - Save game | L - Load game",10,890);
+    text("R - Reset | S - Save game | L - Load game",10,890); // คำแนะนำในการเล่น (Show instructions)
 
-    if (isEnd == false){
+    if (isEnd == false){ // ถ้าเกมยังไม่จบ (If game is not ended)
         if (Player == 'O'){ // ถ้าเป็นรอบของ X (If it's X's turn)
-            if (clickX == 1){
-                drawX();
-                speedX = speedX + 5;
+            if (clickX == 1){ // ถ้าคลิกที่ช่อง (If click)
+                drawX(); // วาด X (Draw X)
+                speedX = speedX + 5; // ขยายขนาด X (Expand X)
             }
         }
-        else{
-            if (clickX == 1){
-                drawO();
-                speedO = speedO + 10;
+        else{ // ถ้าเป็นรอบของ O (If it's O's turn)
+            if (clickX == 1){ // ถ้าคลิกที่ช่อง (If click)
+                drawO(); // วาด O (Draw O)
+                speedO = speedO + 10; // ขยายขนาด O (Expand O)
             }
         }
     }
-    else{
-        clickX = 0;
+    else{ // ถ้าเกมจบ (If game is ended)
+        clickX = 0; // กำหนดว่ายังไม่คลิก (Set click as not)
     }
-
-    if (speedX > 50){
-        speedX = 1;
-        clickX = 0;
+ 
+    // Popping Animation
+    if (speedX > 50){ // ถ้าขนาด X มากกว่า 50 (If X's size is more than 50)
+        speedX = 1; // กำหนดขนาด X เป็น 1 (Set X's size as 1)
+        clickX = 0; // กำหนดว่ายังไม่คลิก เพื่อหยุดการวาด (Set click as not to stop drawing)
     }
-    if (speedO > 100){
-        speedO = 1;
-        clickX = 0;
+    if (speedO > 100){ // ถ้าขนาด O มากกว่า 100 (If O's size is more than 100)
+        speedO = 1; // กำหนดขนาด O เป็น 1 (Set O's size as 1)
+        clickX = 0; // กำหนดว่ายังไม่คลิก เพื่อหยุดการวาด (Set click as not to stop drawing)
     }
 }
 
-void checkHint(){
-    printBoard();
-    // แนวนอน
+void checkHint(){ // การใบ้ว่าใครใกล้จะชนะ (Check who's close to win)
+    // แนวนอน (Horizontal)
     if (board[0][0] == board[1][0]){
         showHint();
     }
@@ -112,7 +112,7 @@ void checkHint(){
     if (board[1][2] == board[2][2]){
         showHint();
     }
-    // แนวตั้ง
+    // แนวตั้ง (Vertical)
     if (board[0][0] == board[0][1]){
         showHint();
     }
@@ -131,7 +131,7 @@ void checkHint(){
     if (board[2][1] == board[2][2]){
         showHint();
     }
-    // แนวทะแยง
+    // แนวทะแยง (Diagonal)
     if (board[0][0] == board[1][1]){
         showHint();
     }
@@ -147,14 +147,14 @@ void checkHint(){
 }
 
 void showHint(){
-    noStroke();
-    fill(255);
-    rect(180,810,450,815);
+    noStroke(); // ไม่วาดเส้น (No stroke)
+    fill(255); // สีของสี่เหลี่ยม (Text color)
+    rect(180,810,450,815); // สี่เหลี่ยม (Rectangle)
     stroke(10);
     textSize(40); // กำหนดขนาดตัวอักษรที่ 40 (Set text size to 40)
     fill(255,0,0); // กำหนดสีตัวอักษรให้เป็นสีแดง (Set text color to red)
-    String printthis = "Hint : " + Player + " is close to winning";
-    text(printthis,190,850);
+    String printthis = "Hint : " + Player + " is close to winning"; // กำหนดข้อความที่จะแสดง (Set text to show)
+    text(printthis,190,850); // แสดงข้อความ (Show text)
     fill(0); // คืนค่าสีกลับเป็นสีดำเหมือนเดิม (Set color back to black)
 }
 
@@ -216,21 +216,6 @@ void flipFlop(){ // สลับรอบของผู้เล่น (Change 
 
 // Drawing
 void drawSelection(int posX, int posY){ // ฟังก์ชันไว้เลือกว่าจะวาดอะไร (Select X or Y to draw)
-    clickX = 1;
-
-    // เขียนบอกว่าเป็นรอบของใคร (แบบเดียวกับใน void setup()) (Show who's turn. Same as void setup())
-    noStroke();
-    fill(255);
-    rect(300,50,230,60);
-    fill(0);
-
-    flipFlop(); // สลับเป็นผู้เล่นอีกคนเพื่อแสดงว่าเป็นรอบต่อไป (Show next turn)
-    textSize(70);
-    text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
-    text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
-    stroke(10);
-    flipFlop(); // หลังแสดงแล้ว เปลี่ยนกลับเป็นผู้เล่นเดิม (Change back to previous player)
-    
     int i = 0;
     int j = 0;
     
@@ -254,76 +239,73 @@ void drawSelection(int posX, int posY){ // ฟังก์ชันไว้เ�
         j = 2;
     }
 
-    if (Player == 'X'){ // ถ้าผู้เล่นคือ X (If player is X)
-        posX_ANIMATE_X = posX;
-        posY_ANIMATE_X = posY; // วาด X ที่ตำแหน่ง (posX,posY) (Draw X at position (posX,posY))
-        board[i][j] = 'X';  // กำหนด Array ในตำแหน่ง [i][j] ตามตำแหน่ง posX,posY ตามที่กำหนดไว้ของเงื่อนไขด้านบน (Set array at position [i][j] with reference to posX,posY)
+    if (board[i][j] != 'X' && board[i][j] != 'O'){ // ถ้าช่องนั้นยังไม่ถูกเล่น (If the channel is not played)
+        clickX = 1; // กำหนดว่าคลิกแล้วเริ่มอนิเมชัน (Set clickX to 1 to start animation)
+
+        // เขียนบอกว่าเป็นรอบของใคร (แบบเดียวกับใน void setup()) (Show who's turn. Same as void setup())
+        noStroke();
+        fill(255);
+        rect(300,50,230,60);
+        fill(0);
+
+        flipFlop(); // สลับเป็นผู้เล่นอีกคนเพื่อแสดงว่าเป็นรอบต่อไป (Show next turn)
+        textSize(70);
+        text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
+        text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
+        stroke(10);
+        flipFlop(); // หลังแสดงแล้ว เปลี่ยนกลับเป็นผู้เล่นเดิม (Change back to previous player)
+
+        if (Player == 'X'){ // ถ้าผู้เล่นคือ X (If player is X)
+            posX_ANIMATE_X = posX;
+            posY_ANIMATE_X = posY; // วาด X ที่ตำแหน่ง (posX,posY) (Draw X at position (posX,posY))
+            board[i][j] = 'X';  // กำหนด Array ในตำแหน่ง [i][j] ตามตำแหน่ง posX,posY ตามที่กำหนดไว้ของเงื่อนไขด้านบน (Set array at position [i][j] with reference to posX,posY)
+        }
+        else{
+            posX_ANIMATE_O = posX;
+            posY_ANIMATE_O = posY; // วาด O ที่ตำแหน่ง (posX,posY) (Draw O at position (posX,posY))
+            board[i][j] = 'O'; 
+        }
+
+        // กลบข้อความมุมขวาล่าง (Clear text at bottom right)
+        fill(255);
+        noStroke();
+        rect(690,850,800,900);
+        fill(0);
+        stroke(10);
+        
+        checkHint(); // ตรวจสอบว่ามีผู้ใกล้ชนะหรือยัง แล้วใบ้เป็นการเตือน (Check if there is close to winning or not and show hint)
+        checkWin(); // หลังถูกสั่งให้วาด ก็ตรวจว่ามีผู้ชนะหรือยัง (After drawing, check if there is a winner)
+        flipFlop(); // สลับรอบของผู้เล่น (Change turn) 
     }
     else{
-        posX_ANIMATE_O = posX;
-        posY_ANIMATE_O = posY; // วาด O ที่ตำแหน่ง (posX,posY) (Draw O at position (posX,posY))
-        board[i][j] = 'O'; 
+        println("This position is already played"); // ถ้าช่องนั้นถูกเล่นแล้ว ไม่ให้กดซ้ำ (If the channel is already played, don't allow to click again)
     }
-    // กลบข้อความมุมขวาล่าง
-    fill(255);
-    noStroke();
-    rect(690,850,800,900);
-    fill(0);
-    stroke(10);
-    
-    checkHint();
-    checkWin(); // หลังถูกสั่งให้วาด ก็ตรวจว่ามีผู้ชนะหรือยัง (After drawing, check if there is a winner)
-    flipFlop(); // สลับรอบของผู้เล่น (Change turn) 
-
-    
 }
 
-void saveText(){ // เช็คว่าเล่นไปแล้วกี่ช่อง (Count how many channels have been used)
+void saveGame(){ // บันทึกเกม (Save game)
     int i = 0;
     int j = 0;
     println("File Saved");
     while (j < 3){
         while (i < 3){
-            output.print(board[i][j]);
+            output.print(board[i][j]); // บันทึกสมาชิก Array ของ board ลงในไฟล์ (Save array board to file)
             print(board[i][j]);
             
             if (i < 2){
-                output.print(",");
+                output.print(","); // ถ้าไม่ใช่สมาชิกสุดท้ายในแถว ให้ใส่เครื่องหมาย , คั่นสมาชิกแต่ละตัว (If not the last member in the row, put a comma)
                 print(",");
             }
             i = i + 1;
         }
         i = 0;
         j = j + 1;
-    if (j < 3){
+    if (j < 3){ 
         output.print(",");
         print(",");
     }
     }
     j = 0;
     output.print("," + Player);
-    println();
-}
-
-void printFileLoaded(){ 
-    int i = 0;
-    int j = 0;
-    println("File Loaded");
-    while (j < 3){
-        while (i < 3){
-            print(board[i][j]);
-            if (i < 2){
-                print(",");
-            }
-            i = i + 1;
-        }
-        i = 0;
-        j = j + 1;
-    if (j < 3){
-        print(",");
-    }
-    }
-    j = 0;
     println();
 }
 
@@ -340,7 +322,7 @@ void drawO(){ // วาด O ตามตำแหน่ง posX,posY (Draw O at
     fill(0);
 }
 
-void drawLoadGame(){
+void drawLoadGame(){ // วาดตารางเกมที่โหลดมา (Draw loaded game)
     int i = 0;
     int j = 0;
     int posX = 0;
@@ -349,6 +331,7 @@ void drawLoadGame(){
    
     while (j < 3){
         while (i < 3){
+            // เงื่อนไขแปลงเลขทีมาจากตำแหน่งเป็นตำแหน่งในการวาด (Condition to convert index from position to position for drawing)
             if (i == 0){
                 posX = 200; 
             }
@@ -369,21 +352,20 @@ void drawLoadGame(){
             }
 
             if (board[i][j] == 'X'){
-                posX_ANIMATE_X = posX;
-                posY_ANIMATE_X = posY; // วาด X ที่ตำแหน่ง (posX,posY) (Draw X at position (posX,posY))
-                speedX = 50;
+                posX_ANIMATE_X = posX; // กำหนดตำแหน่งให้ตัวแปร posX_ANIMATE_X เพื่อให้วาดได้ (Set position for posX_ANIMATE_X to draw)
+                posY_ANIMATE_X = posY; // กำหนดตำแหน่งให้ตัวแปร posY_ANIMATE_X เพื่อให้วาดได้ (Set position for posY_ANIMATE_X to draw)
+                speedX = 50; // ใส่ขนาดเต็มของ X เพราะการโหลดเกมกลับบมาจะไม่มีอนิเมชัน (จะได้แสดงผลที่เฟรมสุดท้าย แทนที่จะเป็นเฟรมแรก) (Set full size of X because loading game will not have animation (will display at last frame instead of first frame))
                 drawX();
                 
                 
             }
             if (board[i][j] == 'O'){
-                posX_ANIMATE_O = posX;
-                posY_ANIMATE_O = posY; // วาด O ที่ตำแหน่ง (posX,posY) (Draw O at position (posX,posY))
-                speedO = 100;
+                posX_ANIMATE_O = posX; // กำหนดตำแหน่งให้ตัวแปร posX_ANIMATE_O เพื่อให้วาดได้ (Set position for posX_ANIMATE_O to draw)
+                posY_ANIMATE_O = posY; // กำหนดตำแหน่งให้ตัวแปร posY_ANIMATE_O เพื่อให้วาดได้ (Set position for posY_ANIMATE_O to draw)
+                speedO = 100; // ใส่ขนาดเต็มของ O เพราะการโหลดเกมกลับบมาจะไม่มีอนิเมชัน (จะได้แสดงผลที่เฟรมสุดท้าย แทนที่จะเป็นเฟรมแรก) (Set full size of O because loading game will not have animation (will display at last frame instead of first frame))
                 drawO();
                 
             }
-            isLoading = true;
             
             i = i + 1;
         }
@@ -392,6 +374,7 @@ void drawLoadGame(){
     }
     j = 0;
 }
+
 void checkWin(){ // ตรวจสอบว่ามีผู้ชนะหรือไม่ โดยใช้ Array เป็นตัวอ้างอิงตำแหน่ง (Check if someone wins by referring to an array.)
     // แนวนอน (Horizontal)
     if (board[0][0] == board[1][0] && board[1][0] == board[2][0]){
@@ -455,6 +438,7 @@ void checkClicked(){ // เช็คว่าเล่นไปแล้วก�
     j = 0;
 }
 
+// Debug
 void printBoard(){
     int i = 0;
     int j = 0;
@@ -477,6 +461,29 @@ void printBoard(){
     println();
 }
 
+// แสดงผลไฟล์ที่โหลดกลับมา (Show the file that was loaded)
+void printFileLoaded(){ 
+    int i = 0;
+    int j = 0;
+    println("File Loaded");
+    while (j < 3){
+        while (i < 3){
+            print(board[i][j]);
+            if (i < 2){
+                print(",");
+            }
+            i = i + 1;
+        }
+        i = 0;
+        j = j + 1;
+    if (j < 3){
+        print(",");
+    }
+    }
+    j = 0;
+    println();
+}
+
 void keyPressed(){
     // กลบข้อความมุมขวาล่าง (อันเก่า)
     fill(255);
@@ -486,7 +493,6 @@ void keyPressed(){
     stroke(10);
 
     // Debug Mode
-    // Click C to count XO in array
     if (keyCode == 'C'){
         checkClicked(); // เรียกใช้งานฟังก์ชัน checkClicked() (Call the checkClicked () function)
         fill(255);
@@ -495,7 +501,8 @@ void keyPressed(){
         fill(255,0,0);
         textSize(40);
         text(clicked,20,40);
-        printBoard();
+        
+        printBoard(); // เรียกใช้งานฟังก์ชัน printBoard() เพื่อดูค่าของ Array board (Call the printBoard () function to see the value of the Array board)
     }
 
     // Click R to reset game
@@ -503,7 +510,7 @@ void keyPressed(){
         setup(); // เรียกใช้งานฟังก์ชัน setup() (Call the setup () function)
         resetArray(); // เรียกใช้งานฟังก์ชัน resetArray() (Call the resetArray () function)
         
-        Player = 'X';
+        Player = 'X'; // ให้ X เป็นผู้เล่นเริ่มต้น (Let X be the starting player)
         // เขียนบอกว่าเป็นรอบของใคร (แบบเดียวกับใน void setup()) (Show who's turn. Same as void setup())
         noStroke();
         fill(255);
@@ -514,6 +521,7 @@ void keyPressed(){
         text("Turn : ",275,100); // บอกว่ารอบของใคร (Show who's turn)
         text(Player,470,100); // บอกว่าใครเป็นผู้เล่นในรอบนั้น (Show who's player)
 
+        // ข้อความสถานะที่มุมขวาล่าง
         fill(255,55,58);
         textSize(30); // (Set text size as 30)
         text("Reset",720,890);
@@ -523,11 +531,12 @@ void keyPressed(){
     // Click S to save game
     if (keyCode == 'S'){
         output = createWriter("save.txt");
-        saveText(); // บันทึกเกม (Save game)
+        saveGame(); // บันทึกเกม (Save game)
         output.flush();  // Writes the remaining data to the file
         output.close();  // Finishes the file
         //exit();  // Stops the program
 
+        // ข้อความสถานะที่มุมขวาล่าง
         fill(60,232,65);
         textSize(30); // (Set text size as 30)
         text("Saved",710,890);
@@ -536,12 +545,13 @@ void keyPressed(){
 
     // Click L to load game
     if (keyCode == 'L'){
+        // อ่านไฟล์ save.txt (Read save.txt)
         BufferedReader reader = createReader("save.txt");
         String line = null;
         try {
             while ((line = reader.readLine()) != null) {
-                String[] pieces = split(line, ",");
-                board[0][0] = pieces[0].charAt(0);
+                String[] pieces = split(line, ","); // แยกค่าด้วยเครื่องหมาย , (Split the value with the , symbol)
+                board[0][0] = pieces[0].charAt(0); // เอาค่าในตำแหน่งที่ 0 ของ Array pieces มาใส่ในตำแหน่งที่ 0 ของ Array board (Put the value in position 0 of the Array pieces into position 0 of the Array board)
                 board[1][0] = pieces[1].charAt(0);
                 board[2][0] = pieces[2].charAt(0);
                 board[0][1] = pieces[3].charAt(0);
@@ -554,18 +564,21 @@ void keyPressed(){
             }
             reader.close();
 
+            // เคลียร์ทุกอย่าง (Clean Up Everything!)
             background(255);
             drawGrid();
             isEnd = false;
             printFileLoaded();
             drawLoadGame();
 
+            // ข้อความสถานะที่มุมขวาล่าง
             fill(255,147,58);
             textSize(30); // (Set text size as 30)
             text("Loaded",700,890);
             fill(0);
 
             // เขียนบอกว่าเป็นรอบของใคร (แบบเดียวกับใน void setup()) (Show who's turn. Same as void setup())
+            // ต้องเขียนอีกรอบเพราะจะเอาค่า Player ที่อ่านมาจากไฟล์มาใช้ (Must write again because it will take the value of Player that was read from the file)
             noStroke();
             fill(255);
             rect(300,50,230,60);

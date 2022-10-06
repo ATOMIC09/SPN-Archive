@@ -1,1 +1,1 @@
-X,O,X,O,X,O,c,f,i,X
+X,O,g,O,X,h,X,O,i,X
